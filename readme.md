@@ -1,5 +1,5 @@
 # React Boilerplate
-A simple quick start react project template.
+A super simple quick start react project template.
 
 ## Contains
 - Editor configuration
