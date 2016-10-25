@@ -24,6 +24,7 @@
     "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.4.1",
+    "express": "^4.14.0",
     "nodemon": "^1.11.0",
     "npm-run-all": "^3.1.1",
     "react": "^15.3.2",
@@ -33,8 +34,9 @@
   },
   "scripts": {
     "dev.compile.app": "cross-env BUILD_DEV=1 && cross-env BUILD_PRERELEASE=1 && cross-env BUILD_RELEASE=0 && webpack",
-    "dev.start.pc": "npm run dev.watch.app",
-    "dev.start.mac": "npm-run-all -p dev.serve.mac dev.watch.app",
+    "dev.serve.mac": "node script/server/expressServer.js",
+    "dev.start.iis": "npm run dev.watch.app",
+    "dev.start.unix": "npm-run-all -p dev.serve.mac dev.watch.app",
     "dev.watch.app": "nodemon -e js,jsx -w script/library -x \"npm run dev.compile.app\"",
     "lint.js": "eslint script/library/**/*",
     "release.compile.app": "cross-env BUILD_DEV=0 && cross-env BUILD_PRERELEASE=0 && cross-env BUILD_RELEASE=1 && webpack --config webpack.config.release.js"
