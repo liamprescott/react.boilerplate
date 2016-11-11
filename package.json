@@ -30,7 +30,7 @@
     "react": "^15.3.2",
     "react-addons-perf": "^15.3.2",
     "react-dom": "^15.3.2",
-    "webpack": "^1.13.2"
+    "webpack": "^2.1.0-beta.25"
   },
   "scripts": {
     "dev.compile.app": "cross-env BUILD_DEV=1 && cross-env BUILD_PRERELEASE=1 && cross-env BUILD_RELEASE=0 && webpack",

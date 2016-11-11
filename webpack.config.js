@@ -30,7 +30,7 @@ var featureFlagsPlugin = new webpack.DefinePlugin({
 
 /* Configure webpack export */
 module.exports = {
-  watch: true,
+  // watch: true,
 
   // version: JSON.stringify(JSON.parse(process.env.VERSION || '')),
 
@@ -52,34 +52,46 @@ module.exports = {
     publicPath: '/script/deploy/',
     chunkFilename: '[id].bundle.js',
     filename: '[name].js',
+    sourceMapFilename: 'sourcemaps/[file].map',
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/, /* /(node_modules|bower_components)/ */
+        exclude: /node_modules/,
+        include: [path.resolve(__dirname, 'script/library')],
+        // issuer: { test, include, exclude },
         loader: 'babel-loader',
-        query: {
+        options: {
           cacheDirectory: true,
-          presets: ['es2015', 'stage-2', 'react'],
+          minified: true, // Might only want this for production / release
+          // "presets": [["es2015", { "modules": false }], "stage-2", "react"] // Dont need this (can rely on .babelrc). Alt. add (babelrc: false) and remove .babelrc
         },
       },
     ],
   },
 
   resolve: {
-    root: srcPath,
-    extensions: ['', '.js', '.jsx'],
-    modulesDirectories: ['node_modules', 'script/library'],
+    extensions: ['.js', '.jsx'],
+    modules: [
+      'node_modules',
+      path.resolve(__dirname, 'script/library')
+    ],
   },
 
   plugins: [
     featureFlagsPlugin,
-    new webpack.optimize.CommonsChunkPlugin('common.js'),
+    new webpack.optimize.CommonsChunkPlugin(
+      {
+        name: 'common',
+        filename: 'common.bundle.js'
+      }
+    ),
+
   ],
 
-  devtool: 'eval-cheap-module-source-map',
+  devtool: 'cheap-source-map',
 };
 
 
@@ -87,3 +99,5 @@ module.exports = {
 // 'SET NODE_ENV=production' required for windows...doesn't look like it makes a difference!
 //  "webpack:bundle": "SET NODE_ENV=production&&webpack -p"
 //  "webpack:bundle": "webpack -p" //'-p' doesn't seem to make a difference!
+// TODO:
+// Check out 'https://github.com/petehunt/webpack-howto#user-content-6-feature-flags'

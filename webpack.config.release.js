@@ -19,7 +19,6 @@ var featureFlagsPlugin = new webpack.DefinePlugin({
 
 /* Configure webpack export */
 module.exports = {
-
   entry: {
     bundle: path.join(srcPath, 'index.jsx'),
     // common: ['react', 'react-dom', 'react-redux', 'react-router', 'redux', 'redux-batched-actions', 'redux-thunk'],
@@ -37,24 +36,29 @@ module.exports = {
 
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
+        include: [path.resolve(__dirname, 'script/library')],
+        // issuer: { test, include, exclude },
         loader: 'babel-loader',
-        query: {
+        options: {
           cacheDirectory: true,
-          presets: ['es2015', 'stage-2', 'react'],
-        }
-      }
-    ]
+          minified: true, // Might only want this for production / release
+          // "presets": [["es2015", { "modules": false }], "stage-2", "react"] // Dont need this (can rely on .babelrc). Alt. add (babelrc: false) and remove .babelrc
+        },
+      },
+    ],
   },
 
 
   resolve: {
-    root: srcPath,
-    extensions: ['', '.js', '.jsx'],
-    modulesDirectories: ['node_modules', 'script/library'],
+    extensions: ['.js', '.jsx'],
+    modules: [
+      'node_modules',
+      path.resolve(__dirname, 'script/library')
+    ],
   },
 
 
@@ -68,16 +72,26 @@ module.exports = {
       }
     }),
 
-    new webpack.optimize.CommonsChunkPlugin('common.js'),
+    new webpack.optimize.CommonsChunkPlugin(
+      {
+        name: 'common',
+        filename: 'common.bundle.js'
+      }
+    ),
 
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false, // Suppress the output from uglify during build
       },
-      minimize: true
+      output: {
+        comments: false,
+      },
+      minify: true
     }),
   ],
 
+
+  devtool: 'source-map',
   // debug: true,
   //
   // devtool: If ommitted doesn't generate source maps

@@ -48,6 +48,11 @@ node_modules/**/*
 */node_modules/**/*
 
 
+
+# Deployment #
+######################
+/script/deploy/**/*
+
 # Temporary files / folders #
 ######################
 # any folder or file prefixed with '--temp-'
