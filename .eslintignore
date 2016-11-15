@@ -10,7 +10,7 @@ node_modules/**/*
 # All (build process) configuration files in the root directory (JS / JSON)
 # e.g. package.json or postcss-options-*.json
 /*.json
-/*.js
+# /*.js
 
 # Deployment
 /script/deploy/**/*
