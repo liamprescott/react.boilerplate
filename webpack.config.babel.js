@@ -32,7 +32,7 @@ export default function (options) {
     }
   ));
 
-  // Trace optiosn
+  // Trace options
   Object.keys(options).forEach((key) => { console.log(`${key} ${options[key]}`); });
 
   // console.log('prop1 = ' + options.prop1 + ' // prop2 = ' + options.prop2);
